@@ -2,13 +2,13 @@
 
 ## Setting Up Your Database
 
-To set up the Mind-Connect database, you'll need to run the SQL script located at `/tmp/setup_database.sql` in your Supabase SQL Editor.
+To set up the Mind-Connect database, you'll need to run the SQL script located at `setup_database.sql` in your Supabase SQL Editor.
 
 ### Steps:
 
 1. Go to your Supabase project dashboard
 2. Navigate to the SQL Editor
-3. Copy and paste the contents of `/tmp/setup_database.sql`
+3. Copy and paste the contents of `setup_database.sql` (in the project root directory)
 4. Run the script
 
 This will create all necessary tables with proper Row Level Security policies:

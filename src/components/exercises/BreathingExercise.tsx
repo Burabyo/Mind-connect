@@ -1,111 +1,102 @@
 import { useState, useEffect } from 'react';
-import { Wind, Play, Pause } from 'lucide-react';
+import { Airplay, Feather } from 'lucide-react';
 
 export function BreathingExercise() {
-  const [isActive, setIsActive] = useState(false);
-  const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
-  const [count, setCount] = useState(0);
+  const [phase, setPhase] = useState<'Inhale' | 'Hold' | 'Exhale'>('Inhale');
+  const [count, setCount] = useState(4);
+  const [running, setRunning] = useState(false);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!running) return;
+
+    const phaseDurations = {
+      Inhale: 4,
+      Hold: 4,
+      Exhale: 4,
+    };
 
     const timer = setInterval(() => {
       setCount((prev) => {
-        if (phase === 'inhale' && prev >= 4) {
-          setPhase('hold');
-          return 0;
+        if (prev <= 1) {
+          // Move to next phase
+          if (phase === 'Inhale') setPhase('Hold');
+          else if (phase === 'Hold') setPhase('Exhale');
+          else setPhase('Inhale');
+          return phaseDurations[phase === 'Inhale' ? 'Hold' : phase === 'Hold' ? 'Exhale' : 'Inhale'];
         }
-        if (phase === 'hold' && prev >= 4) {
-          setPhase('exhale');
-          return 0;
-        }
-        if (phase === 'exhale' && prev >= 4) {
-          setPhase('inhale');
-          return 0;
-        }
-        return prev + 1;
+        return prev - 1;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isActive, phase]);
+  }, [running, phase]);
 
-  const getPhaseText = () => {
-    switch (phase) {
-      case 'inhale':
-        return 'Breathe In';
-      case 'hold':
-        return 'Hold';
-      case 'exhale':
-        return 'Breathe Out';
-    }
+  const startExercise = () => {
+    setRunning(true);
+    setPhase('Inhale');
+    setCount(4);
   };
 
-  const getPhaseColor = () => {
-    switch (phase) {
-      case 'inhale':
-        return 'from-blue-400 to-cyan-500';
-      case 'hold':
-        return 'from-green-400 to-emerald-500';
-      case 'exhale':
-        return 'from-purple-400 to-pink-500';
-    }
+  const stopExercise = () => {
+    setRunning(false);
+    setPhase('Inhale');
+    setCount(4);
   };
 
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Breathing Exercise</h2>
-        <p className="text-gray-600">Follow along to calm your mind</p>
+        <h2 className="text-3xl font-bold text-purple-600 mb-2">🌬️ Breathing Exercise 🌬️</h2>
+        <p className="text-purple-400 text-lg">Relax your mind with fun breathing techniques!</p>
       </div>
 
-      <div className={`bg-gradient-to-br ${getPhaseColor()} rounded-3xl p-12 text-center transition-all duration-1000`}>
-        <Wind className="w-20 h-20 text-white mx-auto mb-6" />
-        <h3 className="text-5xl font-bold text-white mb-4">{getPhaseText()}</h3>
-        <div className="text-8xl font-bold text-white mb-8">{count}</div>
+      <div className="bg-gradient-to-br from-blue-100 via-green-100 to-yellow-100 rounded-3xl p-10 text-center shadow-xl border-4 border-purple-200 relative">
+        <Feather className="w-16 h-16 text-blue-400 mx-auto mb-6 animate-pulse" />
+        <div className="mb-6">
+          <h3 className="text-4xl font-bold text-purple-800 mb-2">{phase}</h3>
+          <p className="text-2xl text-purple-600 font-semibold">{count}</p>
+        </div>
 
-        <button
-          onClick={() => {
-            setIsActive(!isActive);
-            if (!isActive) {
-              setPhase('inhale');
-              setCount(0);
-            }
-          }}
-          className="px-8 py-4 bg-white text-gray-800 rounded-2xl font-bold text-xl hover:shadow-xl transition-all flex items-center gap-3 mx-auto"
-        >
-          {isActive ? (
-            <>
-              <Pause className="w-6 h-6" />
-              Pause
-            </>
-          ) : (
-            <>
-              <Play className="w-6 h-6" />
+        <div className="flex justify-center gap-4 flex-wrap">
+          {!running ? (
+            <button
+              onClick={startExercise}
+              className="px-8 py-3 bg-gradient-to-r from-green-400 to-blue-400 text-white rounded-2xl font-bold shadow-md hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+            >
+              <Airplay className="w-5 h-5" />
               Start
-            </>
+            </button>
+          ) : (
+            <button
+              onClick={stopExercise}
+              className="px-8 py-3 bg-gradient-to-r from-pink-400 to-red-400 text-white rounded-2xl font-bold shadow-md hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+            >
+              Stop
+            </button>
           )}
-        </button>
+        </div>
+
+        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-64 h-64 rounded-full bg-gradient-to-br from-purple-200 via-pink-200 to-yellow-200 opacity-30 animate-pulse"></div>
       </div>
 
-      <div className="bg-blue-50 rounded-2xl p-6">
-        <h4 className="font-bold text-gray-800 mb-3 text-lg">How it works:</h4>
-        <ol className="space-y-2 text-gray-700">
+      <div className="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
+        <h4 className="font-bold text-green-800 mb-3 text-lg">How to do it:</h4>
+        <ol className="space-y-2 text-green-700">
           <li className="flex gap-2">
-            <span className="font-bold text-blue-600">1.</span>
-            <span>Breathe in slowly through your nose for 4 seconds</span>
+            <span className="font-bold text-green-600">1.</span>
+            <span>Inhale slowly through your nose for 4 seconds</span>
           </li>
           <li className="flex gap-2">
-            <span className="font-bold text-green-600">2.</span>
+            <span className="font-bold text-purple-600">2.</span>
             <span>Hold your breath for 4 seconds</span>
           </li>
           <li className="flex gap-2">
-            <span className="font-bold text-purple-600">3.</span>
-            <span>Breathe out slowly through your mouth for 4 seconds</span>
+            <span className="font-bold text-pink-600">3.</span>
+            <span>Exhale slowly through your mouth for 4 seconds</span>
           </li>
           <li className="flex gap-2">
-            <span className="font-bold text-orange-600">4.</span>
-            <span>Repeat as many times as you need!</span>
+            <span className="font-bold text-blue-600">4.</span>
+            <span>Repeat for a few rounds to feel relaxed</span>
           </li>
         </ol>
       </div>

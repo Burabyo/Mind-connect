@@ -27,15 +27,16 @@ export function Dashboard() {
     { id: 'victories' as View, label: 'My Wins', icon: Trophy },
   ];
 
+  const mainColor = 'orange'; // primary friendly color
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-yellow-50">
+    <div className="min-h-screen bg-orange-50">
       <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md"
-                style={{ backgroundColor: profile?.avatar_color || '#10B981' }}
+                className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md bg-${mainColor}-500`}
               >
                 {profile?.full_name?.charAt(0).toUpperCase()}
               </div>
@@ -48,7 +49,7 @@ export function Dashboard() {
             </div>
             <button
               onClick={() => signOut()}
-              className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors font-semibold"
+              className={`flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors font-semibold`}
             >
               <LogOut className="w-4 h-4" />
               Sign Out
@@ -61,13 +62,14 @@ export function Dashboard() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
           {navItems.map((item) => {
             const Icon = item.icon;
+            const active = currentView === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
                 className={`p-4 rounded-2xl transition-all transform hover:scale-105 ${
-                  currentView === item.id
-                    ? 'bg-gradient-to-br from-green-400 to-blue-500 text-white shadow-lg'
+                  active
+                    ? `bg-${mainColor}-500 text-white shadow-lg`
                     : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
                 }`}
               >

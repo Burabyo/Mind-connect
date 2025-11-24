@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, Sparkles } from 'lucide-react';
+import { UserCircle2, Lock, Smile } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export function Auth() {
@@ -28,25 +28,22 @@ export function Auth() {
         await signIn(email, password);
       }
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An error occurred');
-      }
+      if (err instanceof Error) setError(err.message);
+      else setError('An error occurred');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-yellow-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-orange-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full mb-4 shadow-lg">
-            <Heart className="w-10 h-10 text-white" fill="white" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-orange-500 rounded-full mb-4 shadow-lg">
+            <Smile className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Mind-Connect</h1>
-          <p className="text-lg text-gray-600">Your mental wellness companion</p>
+          <p className="text-gray-700">Your companion for a happier, calmer mind</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-xl p-8">
@@ -55,7 +52,7 @@ export function Auth() {
               onClick={() => setIsSignUp(true)}
               className={`flex-1 py-3 rounded-xl font-semibold transition-all ${
                 isSignUp
-                  ? 'bg-gradient-to-r from-green-400 to-blue-500 text-white shadow-md'
+                  ? 'bg-orange-500 text-white shadow-md'
                   : 'bg-gray-100 text-gray-600'
               }`}
             >
@@ -65,7 +62,7 @@ export function Auth() {
               onClick={() => setIsSignUp(false)}
               className={`flex-1 py-3 rounded-xl font-semibold transition-all ${
                 !isSignUp
-                  ? 'bg-gradient-to-r from-green-400 to-blue-500 text-white shadow-md'
+                  ? 'bg-orange-500 text-white shadow-md'
                   : 'bg-gray-100 text-gray-600'
               }`}
             >
@@ -76,61 +73,51 @@ export function Auth() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && (
               <>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Your Name
-                  </label>
+                <div className="relative">
+                  <UserCircle2 className="absolute top-3 left-3 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:outline-none transition-colors text-lg"
-                    placeholder="Enter your name"
-                    required={isSignUp}
+                    className="w-full pl-10 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none text-lg"
+                    placeholder="Full Name"
+                    required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Your Age
-                  </label>
+                <div className="relative">
                   <input
                     type="number"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:outline-none transition-colors text-lg"
-                    placeholder="How old are you?"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none text-lg"
+                    placeholder="Age"
                     min="5"
-                    max="18"
-                    required={isSignUp}
+                    max="100"
+                    required
                   />
                 </div>
               </>
             )}
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email
-              </label>
+            <div className="relative">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:outline-none transition-colors text-lg"
-                placeholder="your.email@example.com"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none text-lg"
+                placeholder="Email"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Password
-              </label>
+            <div className="relative">
+              <Lock className="absolute top-3 left-3 w-5 h-5 text-gray-400" />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:outline-none transition-colors text-lg"
-                placeholder="Enter your password"
+                className="w-full pl-10 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none text-lg"
+                placeholder="Password"
                 required
               />
             </div>
@@ -144,18 +131,15 @@ export function Auth() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 bg-orange-500 text-white rounded-xl font-bold text-lg shadow hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? (
-                'Loading...'
-              ) : (
-                <>
-                  <Sparkles className="w-5 h-5" />
-                  {isSignUp ? 'Create Account' : 'Sign In'}
-                </>
-              )}
+              {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
             </button>
           </form>
+
+          <p className="mt-6 text-center text-gray-500 text-sm">
+            Mind-Connect is for everyone — start your mental wellness journey today!
+          </p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Smile, Heart, BookOpen, Calendar, Gamepad2, MessageSquare, Trophy, Sparkles } from 'lucide-react';
+import { Smile, Heart, BookOpen, Calendar, Gamepad2, MessageSquare, Trophy } from 'lucide-react';
 
 interface HomeViewProps {
   onNavigate: (view: string) => void;

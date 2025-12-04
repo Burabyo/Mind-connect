@@ -5,14 +5,32 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+export type Role = 'student' | 'counselor' | 'admin';
+
 export interface Profile {
   id: string;
   full_name: string;
   age: number | null;
   avatar_color: string;
-  created_at: string;
-  updated_at: string;
+  role: Role;
+  created_at?: string;
+  updated_at?: string;
 }
+
+
+export type NewProfile = Omit<Profile, 'created_at' | 'updated_at'>;
+
+export type Database = {
+  public: {
+    Tables: {
+      profiles: {
+        Row: Profile;
+        Insert: NewProfile;
+        Update: Partial<Profile>;
+      };
+    };
+  };
+};
 
 export interface MoodEntry {
   id: string;

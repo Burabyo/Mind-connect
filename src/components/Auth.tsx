@@ -8,6 +8,7 @@ export function Auth() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [age, setAge] = useState('');
+  const [role, setRole] = useState<'student' | 'counselor' | 'admin'>('student'); // new
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signUp, signIn } = useAuth();
@@ -21,9 +22,11 @@ export function Auth() {
       if (isSignUp) {
         if (!fullName || !age) {
           setError('Please fill in all fields');
+          setLoading(false);
           return;
         }
-        await signUp(email, password, fullName, parseInt(age));
+        // Sign up with role
+        await signUp(email, password, fullName, parseInt(age), role);
       } else {
         await signIn(email, password);
       }
@@ -51,9 +54,7 @@ export function Auth() {
             <button
               onClick={() => setIsSignUp(true)}
               className={`flex-1 py-3 rounded-xl font-semibold transition-all ${
-                isSignUp
-                  ? 'bg-orange-500 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600'
+                isSignUp ? 'bg-orange-500 text-white shadow-md' : 'bg-gray-100 text-gray-600'
               }`}
             >
               Sign Up
@@ -61,9 +62,7 @@ export function Auth() {
             <button
               onClick={() => setIsSignUp(false)}
               className={`flex-1 py-3 rounded-xl font-semibold transition-all ${
-                !isSignUp
-                  ? 'bg-orange-500 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600'
+                !isSignUp ? 'bg-orange-500 text-white shadow-md' : 'bg-gray-100 text-gray-600'
               }`}
             >
               Sign In
@@ -84,6 +83,7 @@ export function Auth() {
                     required
                   />
                 </div>
+
                 <div className="relative">
                   <input
                     type="number"
@@ -95,6 +95,19 @@ export function Auth() {
                     max="100"
                     required
                   />
+                </div>
+
+                {/* Role selector */}
+                <div className="relative">
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value as any)}
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none text-lg"
+                  >
+                    <option value="student">Student</option>
+                    <option value="counselor">Counselor</option>
+                    <option value="admin">Admin</option>
+                  </select>
                 </div>
               </>
             )}
